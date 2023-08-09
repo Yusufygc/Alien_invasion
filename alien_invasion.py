@@ -124,6 +124,16 @@ class AlienInvasion:
             self._create_fleet()
 
 
+    def _check_aliens_bottom(self):
+        """Check if any aliens have reached the bottom of the screen."""
+        screen_rect = self.screen.get_rect() 
+        for alien in self.aliens.sprites():
+            if alien.rect.bottom >= screen_rect.bottom:
+                # Treat this the same as if the ship got hit.
+                # uzaylılar ekranın altına ulaşırsa gemiye çarpmış gibi davranır.
+                self._ship_hit() 
+                break
+
     def _update_aliens(self):
         """Update the positions of all aliens in the fleet."""
         # Check if the fleet is at an edge, then 
@@ -139,6 +149,10 @@ class AlienInvasion:
             # fonksiyon harektli öğe ve grup arasında çarpışma olup olmadığını kontrol eder
             # çarpışma varsa çarpışan uzaylıyı döndürür yoksa None döndürür
             self._ship_hit()
+
+        # Look for aliens hitting the bottom of the screen.
+        # ekranın altına ulaşan uzaylıları kontrol eder
+        self._check_aliens_bottom()
 
 
     def _ship_hit(self):
