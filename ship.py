@@ -15,7 +15,8 @@ class Ship():
         self.rect = self.image.get_rect() # get_rect() method to access the ship’s surface rectangle.
 
         # Start each new ship at the bottom center of the screen.
-        self.rect.midbottom = self.screen_rect.midbottom # The ship’s midbottom attribute is set to match the midbottom attribute of the screen’s rectangle.
+        self.rect.midbottom = self.screen_rect.midbottom 
+        # The ship’s midbottom attribute is set to match the midbottom attribute of the screen’s rectangle.
 
         self.settings = ai_game.settings
         self.x = float(self.rect.x) # Store a decimal value for the ship’s horizontal position.
