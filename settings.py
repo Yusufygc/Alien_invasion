@@ -9,11 +9,12 @@ class Settings:
 
         # Ship settings
         self.ship_speed = 1.5
+        self.ship_limit = 3 # 3 ships
         
         # Bullet settings
-        self.bullet_speed = 1.0
-        self.bullet_width = 3 # 3 pixels
-        self.bullet_height = 15 # 15 pixels
+        self.bullet_speed = 1.5
+        self.bullet_width = 9 # 9 pixels
+        self.bullet_height = 20 # 20 pixels
         self.bullet_color = (60,60,60) # dark gray
         self.bullets_allowed = 3 # 3 bullets at a time // tek seferde 3 mermi atılabilir.
 

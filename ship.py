@@ -34,12 +34,22 @@ class Ship():
         # Update rect object from self.x
         self.rect.x = self.x
 
-
-
-    
+ 
     def blitme(self):
         """ Draw the ship at its current location. """
         # blitme() draws the image to the screen at the position specified by self.rect.
         self.screen.blit(self.image,self.rect)
 
-   
+
+    def center_ship(self):
+        """ Center the ship on the screen. """
+        self.rect.midbottom = self.screen_rect.midbottom
+        self.x = float(self.rect.x) 
+        # Store a decimal value for the ship’s horizontal position.
+        # We’ll only be working with the x-coordinate of the ship’s center,
+        # but to keep the x-coordinate properly aligned, we have to store the
+        # decimal part of the position separately from the integer part.
+        # We’ll convert this decimal to an integer when we use it to update
+        # the position of the ship’s rect.
+
+        # geminin tam konumunu takip etmemizi sağlar.
