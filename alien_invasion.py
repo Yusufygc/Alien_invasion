@@ -1,6 +1,8 @@
 import sys
+from time import sleep
 import pygame
 from settings import Settings
+from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -16,8 +18,14 @@ class AlienInvasion:
         self.screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN) 
         #(self.settings.screen_width,self.settings.screen_height)
         # kısıtlı ekran boyutu sağlar fullscreen ile tam ekran olur.
+        # self.screen = pygame.display.set_mode((1200,700))
+        # 1200x700 boyutunda bir ekran oluşturur.
         self.settings.screen_width = self.screen.get_rect().width
         self.settings.screen_height = self.screen.get_rect().height
+        pygame.display.set_caption("Alien Invasion")
+        
+        # create an instance to store game statistics.
+        self.stats = GameStats(self)
         self.ship = Ship(self)
         
         # bullet part
@@ -27,9 +35,6 @@ class AlienInvasion:
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
         
-        # self.screen = pygame.display.set_mode((1200,700))
-        # 1200x700 boyutunda bir ekran oluşturur.
-        pygame.display.set_caption("Alien Invasion")
         # Set the background color.
         self.bg_color = (255,255,255)
 
@@ -99,6 +104,24 @@ class AlienInvasion:
                 self.bullets.remove(bullet)
         #print(len(self.bullets)) 
         #bullets içindeki mermi sayısını ekrana yazdırır.
+        self._check_bullet_alien_collisions()
+
+        
+    def _check_bullet_alien_collisions(self):# çarpışma kontrolü
+
+        # Check for any bullets that have hit aliens.
+        # If so, get rid of the bullet and the alien.
+        collisions = pygame.sprite.groupcollide(self.bullets,self.aliens,True,True)
+        # True True yazmamızın sebebi çarpışan mermi ve uzaylıyı silmek
+        # ilk True mermi için ikinci True uzaylı için
+        # ilk ture yu false yaparsak mermi çarpıştıktan sonra yok olmaz
+        # yani güçlü mermi olur ekrandan yukarı çıkana kadar çarpışmaya devam edersonra silinir
+
+        # yeni filo oluşturmak için
+        if not self.aliens:
+            # Destroy existing bullets and create new fleet.
+            self.bullets.empty()
+            self._create_fleet()
 
 
     def _update_aliens(self):
@@ -110,6 +133,29 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.aliens.update()
 
+        # Look for alien-ship collisions.
+        # uzaylı-gemi çarpışmaları için
+        if pygame.sprite.spritecollideany(self.ship,self.aliens):
+            # fonksiyon harektli öğe ve grup arasında çarpışma olup olmadığını kontrol eder
+            # çarpışma varsa çarpışan uzaylıyı döndürür yoksa None döndürür
+            self._ship_hit()
+
+
+    def _ship_hit(self):
+        """Respond to the ship being hit by an alien."""
+        # Decrement ships_left.
+        if self.stats.ships_left>0:
+            self.stats.ships_left -= 1
+            # Get rid of any remaining aliens and bullets.
+            self.aliens.empty()
+            self.bullets.empty()
+            # Create a new fleet and center the ship.
+            self._create_fleet()
+            self.ship.center_ship()
+            # Pause.
+            sleep(0.5)
+        else:
+            self.stats.game_active = False
 
     def _create_fleet(self):
         """create the fleet of aliens.""" 
@@ -161,6 +207,7 @@ class AlienInvasion:
         # oluşturulan her bir alienı aliens grubuna ekliyoruz
         self.aliens.add(alien) 
 
+
     def _check_fleet_edges(self):
         """Respond appropriately if any aliens have reached an edge."""
         # herhangi bir uzaylı kenara ulaştıysa uygun şekilde yanıt verin. 
@@ -169,13 +216,13 @@ class AlienInvasion:
                 self._change_fleet_direction()
                 break
 
+
     def _change_fleet_direction(self):
         """Drop the entire fleet and change the fleet's direction."""
         # Bütün filoyu düşürün(yani alt satıra) ve filonun yönünü değiştirin.
         for alien in self.aliens.sprites(): 
             alien.rect.y += self.settings.fleet_drop_speed 
         self.settings.fleet_direction *= -1
-
 
 
     def _update_screen(self):
@@ -197,7 +244,6 @@ class AlienInvasion:
         # hareketli öğe grafikleri üzerinden döngü kuruyoruz
         # ve her bir hareketli öğe grafiği üzerinde draw_bullet() methodunu çağırıyoruz.
         
-
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
