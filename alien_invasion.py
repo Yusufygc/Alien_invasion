@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 from settings import Settings
 from game_stats import GameStats
+from scoreboard import Scoreboard
 from button import Button
 from ship import Ship
 from bullet import Bullet
@@ -27,6 +28,7 @@ class AlienInvasion:
         
         # create an instance to store game statistics.
         self.stats = GameStats(self)
+        self.sb = Scoreboard(self) # create a scoreboard to store game statistics.
         self.ship = Ship(self)
         
         # bullet part
@@ -294,6 +296,8 @@ class AlienInvasion:
         # ateşlenmiş bütün mermileri ekrana çizdirmek için bullets deki
         # hareketli öğe grafikleri üzerinden döngü kuruyoruz
         # ve her bir hareketli öğe grafiği üzerinde draw_bullet() methodunu çağırıyoruz.
+
+        self.sb.show_score()
         
         # oyun aktif değilse play butonunu çizdiriyoruz
         if not self.stats.game_active: 
