@@ -204,6 +204,7 @@ class AlienInvasion:
             sleep(0.5)
         else:
             self.stats.game_active = False
+            pygame.mouse.set_visible(True) # oyun bittiğinde mouse görünür olur
 
 
     def _create_fleet(self):
