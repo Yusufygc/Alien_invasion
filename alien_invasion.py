@@ -84,7 +84,7 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score() # score reset
-            
+
             # reset game settings.
             self.settings.initialize_dynamic_settings() # oyun ayarlarını sıfırlar.
 
@@ -152,13 +152,15 @@ class AlienInvasion:
         # Check for any bullets that have hit aliens.
         # If so, get rid of the bullet and the alien.
         collisions = pygame.sprite.groupcollide(self.bullets,self.aliens,True,True)
+        # collisions sözlük oluşturur
         # True True yazmamızın sebebi çarpışan mermi ve uzaylıyı silmek
         # ilk True mermi için ikinci True uzaylı için
         # ilk ture yu false yaparsak mermi çarpıştıktan sonra yok olmaz
         # yani güçlü mermi olur ekrandan yukarı çıkana kadar çarpışmaya devam edersonra silinir
 
         if collisions:
-            self.stats.score += self.settings.alien_points 
+            for aliens in collisions.values():
+                self.stats.score += self.settings.alien_points * len(aliens)
             # her bir çarpışma için puan ekler
             self.sb.prep_score()
           
