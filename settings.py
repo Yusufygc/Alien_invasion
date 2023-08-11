@@ -22,3 +22,24 @@ class Settings:
         self.alien_speed = 1.0
         self.fleet_drop_speed = 10 # 10 pixels
         self.fleet_direction = 1 # 1 represents right; -1 represents left // 1 sağa gider -1 sola gider.
+
+        # How quickly the game speeds up
+        self.speedup_scale = 1.1 # 10% faster each time
+
+        self.initialize_dynamic_settings()
+
+
+    def initialize_dynamic_settings(self):
+        """Initialize settings that change throughout the game."""
+        self.ship_speed = 1.5 # 1.5 pixels
+        self.bullet_speed = 3.0 # 3 pixels
+        self.alien_speed = 1.0 # 1 pixel
+
+        # fleet_direction of 1 represents right; -1 represents left.
+        self.fleet_direction = 1 # 1 sağa gider -1 sola gider.
+
+    def increase_speed(self):
+        """Increase speed settings and alien point values."""
+        self.ship_speed *= self.speedup_scale # increase ship speed
+        self.bullet_speed *= self.speedup_scale # increase bullet speed
+        self.alien_speed *= self.speedup_scale # increase alien speed
