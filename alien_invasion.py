@@ -3,6 +3,7 @@ from time import sleep
 import pygame
 from settings import Settings
 from game_stats import GameStats
+from button import Button
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
@@ -39,6 +40,10 @@ class AlienInvasion:
         self.bg_color = (255,255,255)
 
 
+        # Make the Play button.
+        self.play_button = Button(self, "Play")
+
+
     def run_game(self):
         """Start the main loop for the game."""
         while True:
@@ -48,9 +53,9 @@ class AlienInvasion:
                 self.ship.update()
                 self._update_bullets()
                 self._update_aliens()
-            
-            self._update_screen()      
-            
+
+            self._update_screen() 
+
 
     def _check_events(self):
         """Respond to keypresses and mouse events."""
@@ -63,7 +68,32 @@ class AlienInvasion:
 
             elif event.type==pygame.KEYUP:
                 self._check_keyup_events(event)
+
+            elif event.type==pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                self._check_play_button(mouse_pos)
     
+
+    def _check_play_button(self,mouse_pos):
+        """Start a new game when the player clicks Play."""
+        button_clicked = self.play_button.rect.collidepoint(mouse_pos)
+        if button_clicked and not self.stats.game_active:
+            # Reset the game statistics.
+            self.stats.reset_stats()
+            self.stats.game_active = True
+
+            # Get rid of any remaining aliens and bullets.
+            # Kalan uzaylılardan ve mermilerden kurtulun.
+            self.aliens.empty() 
+            self.bullets.empty()
+
+            # Create a new fleet and center the ship.
+            self._create_fleet()
+            self.ship.center_ship()
+
+            # Hide the mouse cursor.
+            pygame.mouse.set_visible(False)
+
 
     def _check_keydown_events(self,event):
         """Respond to keypresses."""
@@ -249,20 +279,25 @@ class AlienInvasion:
         # Redraw the screen during each pass through the loop.
         self.screen.fill(self.settings.bg_color)
         self.ship.blitme()
+       
         for bullet in self.bullets.sprites(): 
             bullet.draw_bullet()
         self.aliens.draw(self.screen)
-       
-        # Make the most recently drawn screen visible.
-        # En son çizilen ekranı görünür hale getirin.
-        pygame.display.flip()
-
+    
         # bullets.sprites() methodu ile bullets içindeki
         # bütün hareketli öğe grafiklerinin bir listesini döndürür.
         # ateşlenmiş bütün mermileri ekrana çizdirmek için bullets deki
         # hareketli öğe grafikleri üzerinden döngü kuruyoruz
         # ve her bir hareketli öğe grafiği üzerinde draw_bullet() methodunu çağırıyoruz.
         
+        # oyun aktif değilse play butonunu çizdiriyoruz
+        if not self.stats.game_active: 
+            self.play_button.draw_button()
+                 
+        # Make the most recently drawn screen visible.
+        # En son çizilen ekranı görünür hale getirin.
+        pygame.display.flip()
+
 
 if __name__ == '__main__':
     # Make a game instance, and run the game.
