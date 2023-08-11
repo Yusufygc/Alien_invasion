@@ -81,6 +81,9 @@ class AlienInvasion:
             # Reset the game statistics.
             self.stats.reset_stats()
             self.stats.game_active = True
+            # reset game settings.
+            self.settings.initialize_dynamic_settings() # oyun ayarlarını sıfırlar.
+
 
             # Get rid of any remaining aliens and bullets.
             # Kalan uzaylılardan ve mermilerden kurtulun.
@@ -155,6 +158,7 @@ class AlienInvasion:
             # Destroy existing bullets and create new fleet.
             self.bullets.empty()
             self._create_fleet()
+            self.settings.increase_speed()
 
 
     def _check_aliens_bottom(self):
