@@ -83,6 +83,8 @@ class AlienInvasion:
             # Reset the game statistics.
             self.stats.reset_stats()
             self.stats.game_active = True
+            self.sb.prep_score() # score reset
+            
             # reset game settings.
             self.settings.initialize_dynamic_settings() # oyun ayarlarını sıfırlar.
 
