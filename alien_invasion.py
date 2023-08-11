@@ -155,6 +155,12 @@ class AlienInvasion:
         # ilk ture yu false yaparsak mermi çarpıştıktan sonra yok olmaz
         # yani güçlü mermi olur ekrandan yukarı çıkana kadar çarpışmaya devam edersonra silinir
 
+        if collisions:
+            self.stats.score += self.settings.alien_points 
+            # her bir çarpışma için puan ekler
+            self.sb.prep_score()
+          
+
         # yeni filo oluşturmak için
         if not self.aliens:
             # Destroy existing bullets and create new fleet.
