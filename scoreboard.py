@@ -20,13 +20,15 @@ class Scoreboard():
 
     def prep_score(self):
         """Turn the score into a rendered image."""
-        score_str = str(self.stats.score) # score'u stringe çeviriyoruz.
+        rounded_score = round(self.stats.score, -1) # score'u 10'luk basamağa yuvarlıyoruz.
+        score_str = "score : {:,}".format(rounded_score) # score'u stringe çeviriyoruz ve virgülden sonra 3 basamaklı sayılar için virgül koyuyoruz.
         self.score_image = self.font.render(score_str, True, self.text_color, self.settings.bg_color) # score'u fonta göre render ediyoruz.
 
         # Display the score at the top right of the screen.
         self.score_rect = self.score_image.get_rect() # score'un koordinatlarını alıyoruz.
         self.score_rect.right = self.screen_rect.right - 20 # score'u sağ üst köşeye yerleştiriyoruz.
         self.score_rect.top = 20 # score'u sağ üst köşeye yerleştiriyoruz.
+
 
     def show_score(self):
         """Draw score to the screen."""
