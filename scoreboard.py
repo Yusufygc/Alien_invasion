@@ -50,8 +50,8 @@ class Scoreboard():
 
         # Position the level below the score.
         self.level_rect = self.level_image.get_rect() # level'in koordinatlarını alıyoruz.
-        self.level_rect.left = self.score_rect.left # level'i score'un sağ tarafına yerleştiriyoruz.
-        self.level_rect.top = self.score_rect.topleft # level'i score'un altına yerleştiriyoruz.
+        self.level_rect.left = self.screen_rect.left + 20 # level'i ekranın sol tarafına yerleştiriyoruz.
+        self.level_rect.top = 20 # level'i sol tarfında 20piksel alta yerleştiriyoruz.
 
 
     def show_score(self):
