@@ -163,6 +163,7 @@ class AlienInvasion:
                 self.stats.score += self.settings.alien_points * len(aliens)
             # her bir çarpışma için puan ekler
             self.sb.prep_score()
+            self.sb.check_high_score()
           
 
         # yeni filo oluşturmak için
