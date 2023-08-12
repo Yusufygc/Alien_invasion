@@ -85,6 +85,7 @@ class AlienInvasion:
             self.stats.game_active = True
             self.sb.prep_score() # score reset
             self.sb.prep_level() # level reset
+            self.sb.prep_ships() # ships reset
 
             # reset game settings.
             self.settings.initialize_dynamic_settings() # oyun ayarlarını sıfırlar.
@@ -214,6 +215,7 @@ class AlienInvasion:
         # Decrement ships_left.
         if self.stats.ships_left > 0:
             self.stats.ships_left -= 1
+            self.sb.prep_ships() # gemileri günceller
             # Get rid of any remaining aliens and bullets.
             self.aliens.empty()
             self.bullets.empty()

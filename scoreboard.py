@@ -1,10 +1,13 @@
 import pygame.font
+from pygame.sprite import Group
+from ship import Ship
 
 class Scoreboard():
     """A class to report scoring information."""
 
     def __init__(self, ai_game):
         """Initialize scorekeeping attributes."""
+        self.ai_game = ai_game
         self.screen = ai_game.screen
         self.screen_rect = self.screen.get_rect() # get_rect() methodu ile ekranın dört bir köşesinin koordinatlarını alıyoruz.
         self.settings = ai_game.settings
@@ -18,6 +21,7 @@ class Scoreboard():
         self.prep_score() # score'u hazırla
         self.prep_high_score() # high score'u hazırla
         self.prep_level() # level'i hazırla
+        self.prep_ships() # gemileri hazırla
 
 
 
@@ -50,8 +54,26 @@ class Scoreboard():
 
         # Position the level below the score.
         self.level_rect = self.level_image.get_rect() # level'in koordinatlarını alıyoruz.
-        self.level_rect.left = self.screen_rect.left + 20 # level'i ekranın sol tarafına yerleştiriyoruz.
-        self.level_rect.top = 20 # level'i sol tarfında 20piksel alta yerleştiriyoruz.
+        self.level_rect.right = self.score_rect.right # level'i ekranın sağ tarafına yerleştiriyoruz.
+        self.level_rect.top =self.score_rect.bottom + 10 # level'i scorun 10piksel altına yerleştiriyoruz.
+
+
+    def prep_ships(self):
+        """Show how many ships are left."""
+        ships_str = "Gardaşlar :" # gemileri stringe çeviriyoruz.
+        self.ships_image = self.font.render(ships_str, True, self.text_color, self.settings.bg_color) # gemileri fonta göre render ediyoruz.
+
+        # Position the ships left of the screen.
+        self.ships_rect = self.ships_image.get_rect() # gemilerin koordinatlarını alıyoruz.
+        self.ships_rect.left = 10 # gemileri ekranın sol tarafına yerleştiriyoruz.
+        self.ships_rect.top = 40 
+        
+        self.ships = Group() # gemileri grup olarak tutuyoruz.
+        for ship_number in range(self.stats.ships_left): # gemileri for döngüsü ile ekliyoruz.
+            ship = Ship(self.ai_game) # gemi oluşturuyoruz.
+            ship.rect.x = 200 + ship_number * ship.rect.width # gemileri birbirinden 10piksel aralıklarla ekliyoruz.
+            ship.rect.y = 2 # gemileri 5 piksel yukarıdan ekliyoruz.
+            self.ships.add(ship) # gemileri gruba ekliyoruz.
 
 
     def show_score(self):
@@ -60,6 +82,8 @@ class Scoreboard():
         # bu method score_rect in belirlediği koordinatlarda score_image'ı ekrana yazdırır.
         self.screen.blit(self.high_score_image, self.high_score_rect) # high score'u ekrana yazdırıyoruz.
         self.screen.blit(self.level_image, self.level_rect) # level'i ekrana yazdırıyoruz.
+        self.screen.blit(self.ships_image, self.ships_rect) # gemileri ekrana yazdırıyoruz.
+        self.ships.draw(self.screen) # gemileri ekrana yazdırıyoruz. self.screen gemilerin ekrana yazdırılacağı yeri belirtir.
 
     def check_high_score(self):
         """Check to see if there's a new high score."""
