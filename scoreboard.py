@@ -17,6 +17,7 @@ class Scoreboard():
         # Prepare the initial score image.
         self.prep_score() # score'u hazırla
         self.prep_high_score() # high score'u hazırla
+        self.prep_level() # level'i hazırla
 
 
 
@@ -42,12 +43,23 @@ class Scoreboard():
         self.high_score_rect.centerx = self.screen_rect.centerx # high score'u ekranın ortasına yerleştiriyoruz.
         self.high_score_rect.top = self.score_rect.top # high score'u score'un üstüne yerleştiriyoruz.
 
+    def prep_level(self):
+        """Turn the level into a rendered image."""
+        level_str = "level : {}".format(self.stats.level) # level'i stringe çeviriyoruz.
+        self.level_image = self.font.render(level_str, True, self.text_color, self.settings.bg_color) # level'i fonta göre render ediyoruz.
+
+        # Position the level below the score.
+        self.level_rect = self.level_image.get_rect() # level'in koordinatlarını alıyoruz.
+        self.level_rect.left = self.score_rect.left # level'i score'un sağ tarafına yerleştiriyoruz.
+        self.level_rect.top = self.score_rect.topleft # level'i score'un altına yerleştiriyoruz.
+
 
     def show_score(self):
         """Draw score to the screen."""
         self.screen.blit(self.score_image, self.score_rect) # score'u ekrana yazdırıyoruz.
         # bu method score_rect in belirlediği koordinatlarda score_image'ı ekrana yazdırır.
         self.screen.blit(self.high_score_image, self.high_score_rect) # high score'u ekrana yazdırıyoruz.
+        self.screen.blit(self.level_image, self.level_rect) # level'i ekrana yazdırıyoruz.
 
     def check_high_score(self):
         """Check to see if there's a new high score."""
