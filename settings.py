@@ -50,4 +50,4 @@ class Settings:
         self.bullet_speed *= self.speedup_scale # increase bullet speed
         self.alien_speed *= self.speedup_scale # increase alien speed
         self.alien_points = int(self.alien_points * self.score_scale) # increase alien point values
-        print(self.alien_points)
+        #print(self.alien_points) # puanın artırılıp artılımadığının kontrolü
