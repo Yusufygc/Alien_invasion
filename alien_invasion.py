@@ -84,10 +84,10 @@ class AlienInvasion:
             self.stats.reset_stats()
             self.stats.game_active = True
             self.sb.prep_score() # score reset
+            self.sb.prep_level() # level reset
 
             # reset game settings.
             self.settings.initialize_dynamic_settings() # oyun ayarlarını sıfırlar.
-
 
             # Get rid of any remaining aliens and bullets.
             # Kalan uzaylılardan ve mermilerden kurtulun.
@@ -165,7 +165,6 @@ class AlienInvasion:
             self.sb.prep_score()
             self.sb.check_high_score()
           
-
         # yeni filo oluşturmak için
         if not self.aliens:
             # Destroy existing bullets and create new fleet.
